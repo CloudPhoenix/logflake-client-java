@@ -12,6 +12,28 @@
     <description>Library to push logs exceptions and performance measurement</description>
     <url>http://logflake.io</url>
 
+    <developers>
+        <developer>
+            <name>Oliviu Gratii</name>
+            <email>oliviu45@gmail.com</email>
+            <organization>LogFlake</organization>
+            <organizationUrl>http://logflake.io</organizationUrl>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://github.com/ollyexe/logflake-client-java.git</connection>
+        <developerConnection>scm:git:ssh://github.com:/ollyexe/logflake-client-java.git</developerConnection>
+        <url>http://github.com/ollyexe/logflake-client-java/tree/main</url>
+    </scm>
+
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -125,13 +147,28 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.6.0</version>
-                <extensions>true</extensions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version> <!-- Added version here -->
                 <configuration>
-                    <publishingServerId>central</publishingServerId>
+                    <archive>
+                        <manifestEntries>
+                            <Built-By>LogFlake</Built-By>
+                        </manifestEntries>
+                    </archive>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
