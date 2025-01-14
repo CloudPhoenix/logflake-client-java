@@ -1,0 +1,156 @@
+package io.logflake;
+
+import io.logflake.enums.LogLevel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+
+import java.util.HashMap;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+class Log4jWrapperTest {
+
+    private Log4jWrapper log4jWrapper;
+    private Logger mockLogger;
+    private LogFlake mockLogFlake;
+
+    @BeforeEach
+    void setUp() {
+        mockLogger = mock(Logger.class);
+        mockLogFlake = mock(LogFlake.class);
+        try (MockedStatic<LogManager> logManagerMockedStatic = mockStatic(LogManager.class)) {
+            logManagerMockedStatic.when(() -> LogManager.getLogger(any(Class.class))).thenReturn(mockLogger);
+            log4jWrapper = Log4jWrapper.getLogger(Log4jWrapperTest.class, mockLogFlake);
+        }
+    }
+
+
+    @Test
+    void getLoggerWithAllParamsCreatesLog4jWrapper() {
+        String server = "server";
+        String appKey = "appKey";
+        String appId = "appId";
+        String hostname = "hostname";
+        String correlation = "correlation";
+        Boolean enableCompression = true;
+        Boolean verbose = true;
+
+        Log4jWrapper log4jWrapper = Log4jWrapper.getLogger(Log4jWrapperTest.class, server, appKey, enableCompression, verbose, appId, hostname, correlation);
+
+        assertNotNull(log4jWrapper);
+        assertEquals(Log4jWrapperTest.class.getName(), log4jWrapper.getLogger().getName());
+        assertEquals(server, log4jWrapper.getLogFlake().getServer());
+        assertEquals(appKey, log4jWrapper.getLogFlake().getAppKey());
+        assertEquals(appId, log4jWrapper.getLogFlake().getAppId());
+        assertEquals(hostname, log4jWrapper.getLogFlake().getHostname());
+        assertEquals(correlation, log4jWrapper.getLogFlake().getCorrelation());
+        assertEquals(enableCompression, log4jWrapper.getLogFlake().getEnableCompression());
+        assertEquals(verbose, log4jWrapper.getLogFlake().getVerbose());
+    }
+
+    @Test
+    void getLoggerWithNullParamsCreatesLog4jWrapper() {
+        String server = "server";
+        String appKey = "appKey";
+        Boolean enableCompression = true;
+        Boolean verbose = true;
+
+        Log4jWrapper log4jWrapper = Log4jWrapper.getLogger(Log4jWrapperTest.class, server, appKey, enableCompression, verbose, null, null, null);
+
+        assertNotNull(log4jWrapper);
+        assertEquals(Log4jWrapperTest.class.getName(), log4jWrapper.getLogger().getName());
+        assertEquals(server, log4jWrapper.getLogFlake().getServer());
+        assertEquals(appKey, log4jWrapper.getLogFlake().getAppKey());
+        assertNull(log4jWrapper.getLogFlake().getAppId());
+        assertNull(log4jWrapper.getLogFlake().getHostname());
+        assertNull(log4jWrapper.getLogFlake().getCorrelation());
+        assertEquals(enableCompression, log4jWrapper.getLogFlake().getEnableCompression());
+        assertEquals(verbose, log4jWrapper.getLogFlake().getVerbose());
+    }
+
+    @Test
+    void infoLogsMessageWithNullParams() {
+        log4jWrapper.info("Info message", (Object[]) null);
+
+        verify(mockLogger).info("Info message", (Object[]) null);
+        verify(mockLogFlake).sendLog("Info message", LogLevel.INFO);
+    }
+
+    @Test
+    void debugLogsMessageWithNullParams() {
+        log4jWrapper.debug("Debug message", (Object[]) null);
+
+        verify(mockLogger).debug("Debug message", (Object[]) null);
+        verify(mockLogFlake).sendLog("Debug message", LogLevel.DEBUG);
+    }
+
+    @Test
+    void warnLogsMessageWithNullParams() {
+        log4jWrapper.warn("Warn message", (Object[]) null);
+
+        verify(mockLogger).warn("Warn message", (Object[]) null);
+        verify(mockLogFlake).sendLog("Warn message", LogLevel.WARN);
+    }
+
+    @Test
+    void errorLogsMessageWithNullParams() {
+        log4jWrapper.error("Error message", (Object[]) null);
+
+        verify(mockLogger).error("Error message", (Object[]) null);
+        verify(mockLogFlake).sendLog("Error message", LogLevel.ERROR);
+    }
+
+    @Test
+    void traceLogsMessageWithNullParams() {
+        log4jWrapper.trace("Trace message", (Object[]) null);
+
+        verify(mockLogger).trace("Trace message", (Object[]) null);
+    }
+
+    @Test
+    void errorLogsExceptionAndSendsExceptionWithParams() {
+        Throwable throwable = new RuntimeException("Exception message");
+        HashMap<String, String> params = new HashMap<>();
+        params.put("key", "value");
+
+        log4jWrapper.error("Error message", throwable, params);
+
+        verify(mockLogger).error("Error message", throwable);
+        verify(mockLogFlake).sendException(throwable, params);
+    }
+
+    @Test
+    void errorLogsExceptionAndSendsExceptionWithEmptyParams() {
+        Throwable throwable = new RuntimeException("Exception message");
+        HashMap<String, String> params = new HashMap<>();
+
+        log4jWrapper.error("Error message", throwable, params);
+
+        verify(mockLogger).error("Error message", throwable);
+        verify(mockLogFlake).sendException(throwable, params);
+    }
+
+    @Test
+    void errorLogsExceptionAndSendsExceptionWithNullParams() {
+        Throwable throwable = new RuntimeException("Exception message");
+
+        log4jWrapper.error("Error message", throwable, null);
+
+        verify(mockLogger).error("Error message", throwable);
+        verify(mockLogFlake).sendException(throwable, null);
+    }
+
+    @Test
+    void destroyClosesLogFlake() {
+        log4jWrapper.destroy();
+
+        verify(mockLogFlake).close();
+    }
+
+
+
+}
