@@ -10,7 +10,7 @@ import java.util.Map;
 @Builder
 @Setter
 @Getter
-public class RequestLog {
+class RequestLog {
     private Object content;
     private String correlation;
     private String hostname;

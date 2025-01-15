@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 
 class LogFlakeTest {
 
-    private LogFlake logFlake;
+    private LogFlakeClient logFlake;
     private HttpClient mockHttpClient;
     private ExecutorService mockExecutorService;
 
@@ -24,7 +24,7 @@ class LogFlakeTest {
     void setUp() {
         mockHttpClient = mock(HttpClient.class);
         mockExecutorService = mock(ExecutorService.class);
-        logFlake = LogFlake.builder()
+        logFlake = LogFlakeClient.builder()
                 .appKey("appKey")
                 .appId("appId")
                 .hostname("hostname")
@@ -36,7 +36,7 @@ class LogFlakeTest {
 
     @Test
     void compressReturnsCompressedData() throws IOException {
-        LogFlake logFlake = LogFlake.builder()
+        LogFlakeClient logFlake = LogFlakeClient.builder()
                 .appKey("appKey")
                 .appId("appId")
                 .hostname("hostname")
@@ -52,7 +52,7 @@ class LogFlakeTest {
 
     @Test
     void compressHandlesEmpty() {
-        LogFlake logFlake = LogFlake.builder()
+        LogFlakeClient logFlake = LogFlakeClient.builder()
                 .appKey("appKey")
                 .appId("appId")
                 .hostname("hostname")
@@ -69,7 +69,7 @@ class LogFlakeTest {
 
     @Test
     void compressHandlesIOException() {
-        LogFlake logFlake = LogFlake.builder()
+        LogFlakeClient logFlake = LogFlakeClient.builder()
                 .appKey("appKey")
                 .appId("appId")
                 .hostname("hostname")

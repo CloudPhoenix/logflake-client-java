@@ -41,7 +41,7 @@ public class HttpClientWrapper {
 
             @Override
             public TimeValue getRetryInterval(HttpResponse response, int execCount, HttpContext context) {
-                return TimeValue.ofSeconds(10L * execCount);
+                return TimeValue.ofSeconds(10L * (long) Math.pow(2, execCount) );
             }
         };
 
