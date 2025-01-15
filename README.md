@@ -135,7 +135,7 @@ LogFlakeClient logFlakeClient = LogFlakeClient.builder()
 
 // Your operation code here
 
-logFlake2.measurePerformance("YOUR_LABEL");
+logFlakeClient.measurePerformance("YOUR_LABEL");
 
 
 ...
@@ -168,7 +168,7 @@ LogFlakeClient logFlakeClient = LogFlakeClient.builder()
 
 // Your operation code here
 
-logFlake2.close();
+logFlakeClient.close();
 
 
 ...
