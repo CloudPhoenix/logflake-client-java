@@ -101,7 +101,7 @@ class HttpClientWrapperTest {
 
         TimeValue interval = retryStrategy.getRetryInterval(mockResponse, 2, mockContext);
 
-        assertEquals(TimeValue.ofSeconds(20), interval);
+        assertEquals(TimeValue.ofSeconds(40), interval);
     }
 
     @Test
