@@ -14,8 +14,8 @@
 
     <developers>
         <developer>
-            <name>Oliviu Gratii</name>
-            <email>oliviu45@gmail.com</email>
+            <name>Dario Emerson</name>
+            <email>info@logflake.io</email>
             <organization>LogFlake</organization>
             <organizationUrl>http://logflake.io</organizationUrl>
         </developer>
@@ -30,9 +30,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git://github.com/ollyexe/logflake-client-java.git</connection>
-        <developerConnection>scm:git:ssh://github.com:/ollyexe/logflake-client-java.git</developerConnection>
-        <url>http://github.com/ollyexe/logflake-client-java/tree/main</url>
+        <connection>scm:git:git://github.com/CloudPhoenix/logflake-client-java.git</connection>
+        <developerConnection>scm:git:ssh://github.com:/CloudPhoenix/logflake-client-java.git</developerConnection>
+        <url>http://github.com/CloudPhoenix/logflake-client-java/tree/main</url>
     </scm>
 
     <properties>
